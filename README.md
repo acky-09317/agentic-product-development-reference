@@ -1,4 +1,4 @@
-# Agentic Engineering Reference
+# Agentic Product Development Reference
 
 An AI coding agent is fast, capable, and unreliable. This repository
 demonstrates the operating system that makes one safe to delegate to on a

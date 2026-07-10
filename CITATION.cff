@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 message: "If you reference this methodology or reuse its artifacts, please cite it as below."
-title: "Agentic Engineering Reference"
+title: "Agentic Product Development Reference"
 type: software
 authors:
   - family-names: "Ackroyd"
     given-names: "Christopher"
 license: MIT
-repository-code: "https://github.com/acky-100/agentic-product-development-reference"
+repository-code: "https://github.com/acky-09317/agentic-product-development-reference"
 abstract: >-
   A reference implementation and field guide for AI-native product
   engineering: the eval harness, guardrails, machine-readable memory, and
