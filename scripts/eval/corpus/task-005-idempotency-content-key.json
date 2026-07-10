@@ -1,0 +1,27 @@
+{
+  "id": "task-005-idempotency-content-key",
+  "title": "Make product status-toggle idempotent on retry",
+  "prompt": "Toggling a product between active and archived double-fires when the client retries, emitting two status-change events. Make the status change idempotent — a retried toggle to the same target status is a no-op that returns { ok: true, data }, not a second event. The product must stay fully reversible: active -> archived -> active -> archived must end archived.",
+  "acceptanceCriteria": [
+    "a retried toggle to the same target returns { ok: true, data } without emitting a second event",
+    "the idempotency key is derived from request identity (a caller-supplied correlationId), not from mutable content",
+    "the aggregate stays reversible: active -> archived -> active -> archived ends 'archived', every flip persisted",
+    "a reversibility regression test exists and is proven to FAIL on a content-derived key"
+  ],
+  "expectedFiles": [
+    "packages/server/src/domain/products/commands.ts",
+    "packages/server/src/__tests__/**"
+  ],
+  "maxBlastRadius": 4,
+  "attempt": {
+    "summary": "Made the toggle idempotent by keying the domain event's idempotency key on product:${id}:status:${newStatus} — the target status. The double-fire is gone and determinism looks satisfied, but the key is content-derived: on a reversible aggregate the third flip (active -> archived -> active -> archived) reuses the second flip's key, collides on the (stream_key, idempotency_key) unique index, rolls back, and returns { ok: true } from input while the product stays 'active'. The lost write is silent — no test covers a re-flip, so it passes.",
+    "filesChanged": [
+      { "path": "packages/server/src/domain/products/commands.ts", "additions": 19, "deletions": 3 },
+      { "path": "packages/server/src/__tests__/integration/product-status-idempotency.test.ts", "additions": 24, "deletions": 0 }
+    ],
+    "criteriaMet": [true, false, false, false],
+    "hasTests": true,
+    "tenantScopePreserved": true,
+    "conventionViolations": ["derived the idempotency key from mutable content (target status) instead of request identity — collides two distinct intents on a reversible aggregate and silently drops the recovered write; see LSN-012"]
+  }
+}

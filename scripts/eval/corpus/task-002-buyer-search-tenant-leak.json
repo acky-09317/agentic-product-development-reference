@@ -1,0 +1,29 @@
+{
+  "id": "task-002-buyer-search-tenant-leak",
+  "title": "Add buyer full-text search",
+  "prompt": "Add a query that searches buyers by name for the buyers list page. Return a BuyerSummaryDTO[]. Every query must remain org-scoped.",
+  "acceptanceCriteria": [
+    "a searchBuyers query returns BuyerSummaryDTO[] ordered by relevance",
+    "the query is wired into the buyers list page DTO",
+    "results map null → undefined",
+    "every query filters by orgId (tenant scope preserved)"
+  ],
+  "expectedFiles": [
+    "packages/server/src/queries/buyers.queries.ts",
+    "packages/http/src/queries/buyers.ts",
+    "packages/server/src/__tests__/**"
+  ],
+  "maxBlastRadius": 5,
+  "attempt": {
+    "summary": "Added searchBuyers with an ILIKE match and relevance ordering, wired it into the buyers list DTO, added a test for the happy path — but the search query's WHERE clause filters on the name term only and drops the orgId predicate.",
+    "filesChanged": [
+      { "path": "packages/server/src/queries/buyers.queries.ts", "additions": 18, "deletions": 0 },
+      { "path": "packages/http/src/queries/buyers.ts", "additions": 5, "deletions": 1 },
+      { "path": "packages/server/src/__tests__/integration/buyer-search.test.ts", "additions": 22, "deletions": 0 }
+    ],
+    "criteriaMet": [true, true, true, false],
+    "hasTests": true,
+    "tenantScopePreserved": false,
+    "conventionViolations": []
+  }
+}

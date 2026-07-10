@@ -1,0 +1,29 @@
+{
+  "id": "task-004-idempotency-identity-gate",
+  "title": "Make signup idempotent on retry",
+  "prompt": "Signup 500s when a user double-clicks or refreshes and the org slug is already taken. Make the retry idempotent — recover the existing org and return { ok: true, data } instead of erroring. A different user who picks a taken slug must still get CONFLICT.",
+  "acceptanceCriteria": [
+    "a retried signup with a taken slug returns { ok: true, data } instead of a 500/CONFLICT",
+    "recovery reconstructs the org identity from a recovery read of bootstrap (policy-free) sources",
+    "recover-vs-conflict is gated on server-set identity, never a client-supplied value",
+    "a different user who picks a taken slug still gets CONFLICT (no cross-tenant recovery)"
+  ],
+  "expectedFiles": [
+    "packages/server/src/services/onboarding.service.ts",
+    "packages/server/src/queries/org.queries.ts",
+    "packages/server/src/__tests__/**"
+  ],
+  "maxBlastRadius": 5,
+  "attempt": {
+    "summary": "Made the retry idempotent by recovering the existing org on slug collision — but gated the recover-vs-conflict decision on the client-supplied idempotencyKey instead of the server-set user id. A replayed key, a key collision, or a shared link now recovers another tenant's org and returns its internal orgId; a legitimate owner retrying from a second device sends a fresh key and is wrongly CONFLICTed.",
+    "filesChanged": [
+      { "path": "packages/server/src/services/onboarding.service.ts", "additions": 22, "deletions": 4 },
+      { "path": "packages/server/src/queries/org.queries.ts", "additions": 18, "deletions": 0 },
+      { "path": "packages/server/src/__tests__/integration/onboarding-idempotency.test.ts", "additions": 40, "deletions": 0 }
+    ],
+    "criteriaMet": [true, true, false, false],
+    "hasTests": true,
+    "tenantScopePreserved": false,
+    "conventionViolations": ["gated an authorization decision (recover-vs-conflict) on a client-supplied dedup key instead of server-set identity — see LSN-007"]
+  }
+}

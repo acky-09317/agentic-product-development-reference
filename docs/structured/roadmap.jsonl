@@ -1,0 +1,8 @@
+{"id":"PART-A","title":"Identity, tenancy & authorization","status":"shipped","spec":"docs/architecture/001-tenancy-boundary.md","affects":["packages/auth/**","packages/db/src/rls/**"]}
+{"id":"PART-B","title":"Event-sourced mutations & choreography","status":"shipped","spec":"docs/architecture/002-event-sourced-mutations.md","affects":["packages/server/src/events/**","packages/server/src/listeners/**"]}
+{"id":"PART-C","title":"Catalog identity spine (Product → Variant → SKU)","status":"shipped","spec":"docs/methodology/example-slice-plan.md","affects":["packages/db/src/schema/domains/catalog/**","packages/server/src/queries/catalog.queries.ts"]}
+{"id":"PART-D","title":"Commerce (offer → allocation → order → payment)","status":"shipped","spec":"docs/architecture/002-event-sourced-mutations.md","affects":["packages/server/src/domain/orders/**","packages/http/src/actions/orders.ts"]}
+{"id":"PART-E","title":"Eval-gated agent loop","status":"in-flight","spec":"docs/methodology/evals.md","affects":["scripts/eval/**"]}
+{"id":"PART-F","title":"Platform admin & impersonation","status":"shipped","spec":"docs/architecture/001-tenancy-boundary.md","affects":["packages/http/src/queries/admin/**"]}
+{"id":"PART-G","title":"Buyer-first-class & deferred-ownership RLS","status":"shipped","spec":"docs/architecture/001-tenancy-boundary.md","affects":["packages/db/src/rls/**","packages/server/src/domain/buyers/**"]}
+{"id":"PART-H","title":"Context-budget telemetry (rule-loading measurement)","status":"shipped","spec":"docs/methodology/context-engineering.md","affects":["scripts/rule-loading-report.mjs","scripts/telemetry/**"]}

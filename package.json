@@ -1,0 +1,35 @@
+{
+  "name": "agentic-engineering-reference",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A reference implementation and field guide for AI-native product engineering: reliable, auditable, eval-driven development with a coding agent.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "eval": "node scripts/eval/score-diff.mjs scripts/eval/corpus",
+    "eval:json": "node scripts/eval/score-diff.mjs scripts/eval/corpus --format=json",
+    "check:lessons": "node scripts/check-lessons-ledger.mjs",
+    "check:context-citation": "node scripts/check-context-citation.mjs",
+    "context": "node scripts/context-for-paths.mjs",
+    "rules:report": "node scripts/rule-loading-report.mjs",
+    "rules:report:json": "node scripts/rule-loading-report.mjs --json",
+    "test": "node --test scripts/context-for-paths.test.mjs",
+    "check:examples": "tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler --skipLibCheck src/example/*.ts",
+    "check:preservation": "node scripts/check-preservation.mjs",
+    "check": "npm run check:lessons && npm run check:context-citation && npm run check:preservation && npm run check:examples"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  },
+  "keywords": [
+    "ai-assisted-development",
+    "llm-agents",
+    "evals",
+    "context-engineering",
+    "claude-code",
+    "developer-methodology"
+  ],
+  "license": "MIT"
+}

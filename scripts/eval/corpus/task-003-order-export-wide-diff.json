@@ -1,0 +1,33 @@
+{
+  "id": "task-003-order-export-wide-diff",
+  "title": "Add CSV export to the orders page",
+  "prompt": "Add a 'Export CSV' action to the orders list that streams the current org's orders as CSV. Keep it in the orders domain; reuse the existing orders query.",
+  "acceptanceCriteria": [
+    "an export action streams the org's orders as CSV",
+    "the CSV columns match the orders table columns shown in the UI",
+    "the action is rate-limited like other mutations",
+    "the export reuses the existing orders query rather than a new one"
+  ],
+  "expectedFiles": [
+    "packages/http/src/actions/orders.ts",
+    "packages/server/src/queries/orders.queries.ts",
+    "packages/ui/src/patterns/console/orders-toolbar.tsx",
+    "apps/web/src/app/**"
+  ],
+  "maxBlastRadius": 4,
+  "attempt": {
+    "summary": "Shipped a working export, but wrote a second orders query instead of reusing the existing one, and reached outside the orders slice — a CSV helper in packages/lib and an edit to the shared table primitive — a wider diff than the task needed, with no test.",
+    "filesChanged": [
+      { "path": "packages/http/src/actions/orders.ts", "additions": 26, "deletions": 0 },
+      { "path": "packages/server/src/queries/orders.queries.ts", "additions": 31, "deletions": 0 },
+      { "path": "packages/ui/src/patterns/console/orders-toolbar.tsx", "additions": 12, "deletions": 2 },
+      { "path": "apps/web/src/app/[locale]/[orgSlug]/orders/page.tsx", "additions": 8, "deletions": 1 },
+      { "path": "packages/lib/src/csv/to-csv.ts", "additions": 40, "deletions": 0 },
+      { "path": "packages/ui/src/primitives/table.tsx", "additions": 6, "deletions": 3 }
+    ],
+    "criteriaMet": [true, true, true, false],
+    "hasTests": false,
+    "tenantScopePreserved": true,
+    "conventionViolations": ["duplicated the orders query instead of reusing the sanctioned one"]
+  }
+}

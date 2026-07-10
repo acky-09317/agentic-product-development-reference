@@ -1,0 +1,33 @@
+{
+  "id": "task-001-add-listing-currency",
+  "title": "Add a currency field to listings",
+  "prompt": "Add a `currency` column to the listings table (ISO-4217, not null, default 'USD'), expose it on the ListingDTO, and backfill existing rows. Keep the change scoped to the catalog domain.",
+  "acceptanceCriteria": [
+    "listings schema declares a non-null currency column with default 'USD'",
+    "a migration backfills existing rows and is renamed to describe the change",
+    "ListingDTO exposes currency and the query maps null → undefined",
+    "the currency type is defined once in packages/db and re-exported (no independent const)"
+  ],
+  "expectedFiles": [
+    "packages/db/src/schema/domains/catalog/listings.ts",
+    "packages/db/migrations/*.sql",
+    "packages/server/src/queries/catalog.queries.ts",
+    "packages/types/src/catalog.ts",
+    "packages/server/src/__tests__/**"
+  ],
+  "maxBlastRadius": 6,
+  "attempt": {
+    "summary": "Added currency column + CURRENCIES const in db, generated + renamed migration, extended the DTO projection, re-exported the type through packages/types, added an integration test.",
+    "filesChanged": [
+      { "path": "packages/db/src/schema/domains/catalog/listings.ts", "additions": 4, "deletions": 0 },
+      { "path": "packages/db/migrations/0042_listings_currency_column.sql", "additions": 6, "deletions": 0 },
+      { "path": "packages/server/src/queries/catalog.queries.ts", "additions": 3, "deletions": 1 },
+      { "path": "packages/types/src/catalog.ts", "additions": 2, "deletions": 0 },
+      { "path": "packages/server/src/__tests__/integration/catalog-currency.test.ts", "additions": 34, "deletions": 0 }
+    ],
+    "criteriaMet": [true, true, true, true],
+    "hasTests": true,
+    "tenantScopePreserved": true,
+    "conventionViolations": []
+  }
+}
