@@ -9,6 +9,6 @@ license: MIT
 repository-code: "https://github.com/acky-09317/agentic-product-development-reference"
 abstract: >-
   A reference implementation and field guide for AI-native product
-  engineering: the eval harness, guardrails, machine-readable memory, and
-  planning discipline that make a coding agent reliable and auditable on a
-  multi-tenant SaaS codebase.
+  engineering: the eval harness, guardrails, least-privilege agent identity,
+  machine-readable memory, and planning discipline that make a coding agent
+  reliable and auditable on a multi-tenant SaaS codebase.

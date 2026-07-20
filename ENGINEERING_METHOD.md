@@ -284,7 +284,34 @@ misses the real risks. Full matrix:
 
 ---
 
-## 10. What I'd tell a skeptic
+## 10. Identity: an agent that can edit its guardrails isn't gated
+
+Every mechanism above makes the agent's *output* safe. One more makes its
+*authority* safe — and it's the one that makes the rest load-bearing instead of
+advisory. The moment an agent opens its own pull requests, ask not just "is this
+change correct?" but "what can this agent do to the machinery that judges it?"
+
+The answer must be *nothing*, and it can't be a prompt — "don't touch the CI
+config" is a request an agent will trace right past. It has to be **structural**:
+run the agent under a dedicated least-privilege machine identity that can write
+code and open PRs but **cannot administer the repo** — cannot edit the
+merge-gate, the branch protection, or the reviewer rules. A request to weaken
+its own guardrails returns a hard `403`, proven by probing it. Merge stays
+behind human code-owner review, so even a perfectly-formed PR that quietly
+relaxes a gate needs a human to say yes.
+
+Two properties fall out for free: the files that *define* the gates are ones the
+agent's credential is refused permission to push at all, so gate changes are
+human-authored **by construction**, not by discipline; and nobody has to
+*remember* to stop the agent, because the enforcement layer sits on the other
+side of a permission it doesn't hold. Raising autonomy isn't "trust it more" —
+it's "shrink what it *can* do until the forbidden things are impossible," then
+let it move fast inside the smaller box. Full chapter:
+[`docs/methodology/agent-identity-and-guardrails.md`](./docs/methodology/agent-identity-and-guardrails.md).
+
+---
+
+## 11. What I'd tell a skeptic
 
 > "Isn't this a lot of process for using an autocomplete?"
 
